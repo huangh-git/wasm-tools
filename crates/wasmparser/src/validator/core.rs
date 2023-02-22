@@ -359,6 +359,16 @@ impl ModuleState {
                 )*
             };
 
+            (@visit $self:ident visit_memref_and) => {{
+                $self.validator().visit_memref_and()
+            }};
+            (@visit $self:ident visit_memref_add) => {{
+                // $self.validate_extended_const()?;
+                $self.validator().visit_memref_add()
+            }};
+            (@visit $self:ident visit_memref_const $addr:ident $size:ident $attr:ident) => {{
+                $self.validator().visit_memref_const($addr, $size, $attr)
+            }};
             // These are always valid in const expressions
             (@visit $self:ident visit_i32_const $val:ident) => {{
                 $self.validator().visit_i32_const($val)

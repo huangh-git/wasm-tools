@@ -6,3 +6,6 @@ publish
 *.wasm
 *.wat
 test.config
+
+.idea/*
+crates/wasmparser/.idea/*

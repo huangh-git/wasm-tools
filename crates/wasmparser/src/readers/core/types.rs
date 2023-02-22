@@ -34,6 +34,8 @@ pub enum ValType {
     FuncRef,
     /// The value type is an extern reference.
     ExternRef,
+    /// the value type is (i32x4)
+    MemRef,
 }
 
 impl ValType {
@@ -54,6 +56,7 @@ impl ValType {
             0x7B => Some(ValType::V128),
             0x70 => Some(ValType::FuncRef),
             0x6F => Some(ValType::ExternRef),
+            0x6E => Some(ValType::MemRef),
             _ => None,
         }
     }

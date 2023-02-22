@@ -116,6 +116,34 @@
 macro_rules! for_each_operator {
     ($mac:ident) => {
         $mac! {
+            @mvp MemrefAnd => visit_memref_and
+            @mvp MemrefAdd => visit_memref_add
+            @mvp MemrefConst {addr: u32, size: u32, attr: u32} => visit_memref_const
+            @mvp MemrefMSStore { memarg: $crate::MemArg } => visit_memref_msstore
+            @mvp I32MSStore { memarg: $crate::MemArg } => visit_i32_msstore
+            @mvp I64MSStore { memarg: $crate::MemArg } => visit_i64_msstore
+            @mvp F32MSStore { memarg: $crate::MemArg } => visit_f32_msstore
+            @mvp F64MSStore { memarg: $crate::MemArg } => visit_f64_msstore
+            @mvp I32MSStore8 { memarg: $crate::MemArg } => visit_i32_msstore8
+            @mvp I32MSStore16 { memarg: $crate::MemArg } => visit_i32_msstore16
+            @mvp I64MSStore8 { memarg: $crate::MemArg } => visit_i64_msstore8
+            @mvp I64MSStore16 { memarg: $crate::MemArg } => visit_i64_msstore16
+            @mvp I64MSStore32 { memarg: $crate::MemArg } => visit_i64_msstore32
+            @mvp MemrefMSLoad { memarg: $crate::MemArg } => visit_memref_msload
+            @mvp I32MSLoad { memarg: $crate::MemArg } => visit_i32_msload
+            @mvp I64MSLoad { memarg: $crate::MemArg } => visit_i64_msload
+            @mvp F32MSLoad { memarg: $crate::MemArg } => visit_f32_msload
+            @mvp F64MSLoad { memarg: $crate::MemArg } => visit_f64_msload
+            @mvp I32MSLoad8S { memarg: $crate::MemArg } => visit_i32_msload8_s
+            @mvp I32MSLoad8U { memarg: $crate::MemArg } => visit_i32_msload8_u
+            @mvp I32MSLoad16S { memarg: $crate::MemArg } => visit_i32_msload16_s
+            @mvp I32MSLoad16U { memarg: $crate::MemArg } => visit_i32_msload16_u
+            @mvp I64MSLoad8S { memarg: $crate::MemArg } => visit_i64_msload8_s
+            @mvp I64MSLoad8U { memarg: $crate::MemArg } => visit_i64_msload8_u
+            @mvp I64MSLoad16S { memarg: $crate::MemArg } => visit_i64_msload16_s
+            @mvp I64MSLoad16U { memarg: $crate::MemArg } => visit_i64_msload16_u
+            @mvp I64MSLoad32S { memarg: $crate::MemArg } => visit_i64_msload32_s
+            @mvp I64MSLoad32U { memarg: $crate::MemArg } => visit_i64_msload32_u
             @mvp Unreachable => visit_unreachable
             @mvp Nop => visit_nop
             @mvp Block { blockty: $crate::BlockType } => visit_block

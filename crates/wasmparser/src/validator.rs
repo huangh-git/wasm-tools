@@ -246,7 +246,7 @@ pub struct WasmFeatures {
 impl WasmFeatures {
     pub(crate) fn check_value_type(&self, ty: ValType) -> Result<(), &'static str> {
         match ty {
-            ValType::I32 | ValType::I64 | ValType::F32 | ValType::F64 => Ok(()),
+            ValType::I32 | ValType::I64 | ValType::F32 | ValType::F64 | ValType::MemRef=> Ok(()),
             ValType::FuncRef | ValType::ExternRef => {
                 if self.reference_types {
                     Ok(())

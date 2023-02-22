@@ -559,6 +559,26 @@ impl<'resources, R: WasmModuleResources> OperatorValidatorTemp<'_, 'resources, R
         Ok(index_ty)
     }
 
+    fn check_msstore(&mut self, memarg: MemArg, store_ty: ValType) -> Result<()> {
+        let ty = self.check_memarg(memarg)?;
+        if ty != ValType::I32 {
+            bail!(self.offset, "msstore not support 64bit memory now");
+        }
+        self.pop_operand(Some(store_ty))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        Ok(())
+    }
+
+    fn check_msload(&mut self, memarg: MemArg, load_ty: ValType) -> Result<()> {
+        let ty = self.check_memarg(memarg)?;
+        if ty != ValType::I32 {
+            bail!(self.offset, "msload not support 64bit memory now");
+        }
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(load_ty)?;
+        Ok(())
+    }
+
     fn check_floats_enabled(&self) -> Result<()> {
         if !self.features.floats {
             bail!(self.offset, "floating-point instruction disallowed");
@@ -714,6 +734,14 @@ impl<'resources, R: WasmModuleResources> OperatorValidatorTemp<'_, 'resources, R
         self.pop_operand(Some(ty))?;
         self.pop_operand(Some(ty))?;
         self.push_operand(ty)?;
+        Ok(())
+    }
+
+    // MemRef Op I32
+    fn check_memref_binary_op(&mut self) -> Result<()> {
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(ValType::MemRef)?;
         Ok(())
     }
 
@@ -888,6 +916,7 @@ fn ty_to_str(ty: ValType) -> &'static str {
         ValType::V128 => "v128",
         ValType::FuncRef => "funcref",
         ValType::ExternRef => "externref",
+        ValType::MemRef => "memref",
     }
 }
 
@@ -952,6 +981,98 @@ where
     T: WasmModuleResources,
 {
     type Output = Result<()>;
+
+    fn visit_memref_and(&mut self) -> Self::Output {
+        self.check_memref_binary_op()?;
+        Ok(())
+    }
+    fn visit_memref_add(&mut self) -> Self::Output {
+        self.check_memref_binary_op()?;
+        Ok(())
+    }
+    fn visit_memref_const(&mut self, _addr: u32, _size: u32, _attr: u32) -> Self::Output {
+        self.push_operand(ValType::MemRef)?;
+        Ok(())
+    }
+    fn visit_memref_msstore(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::MemRef)
+    }
+    fn visit_i32_msstore(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I32)
+    }
+    fn visit_i64_msstore(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I64)
+    }
+    fn visit_f32_msstore(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_floats_enabled()?;
+        self.check_msstore(memarg, ValType::F32)
+    }
+    fn visit_f64_msstore(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_floats_enabled()?;
+        self.check_msstore(memarg, ValType::F64)
+    }
+    fn visit_i32_msstore8(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I32)
+    }
+    fn visit_i32_msstore16(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I32)
+    }
+    fn visit_i64_msstore8(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I64)
+    }
+    fn visit_i64_msstore16(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I64)
+    }
+    fn visit_i64_msstore32(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msstore(memarg, ValType::I64)
+    }
+    fn visit_memref_msload(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::MemRef)
+    }
+    fn visit_i32_msload(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I32)
+    }
+    fn visit_i64_msload(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I64)
+    }
+    fn visit_f32_msload(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_floats_enabled()?;
+        self.check_msload(memarg, ValType::F32)
+    }
+    fn visit_f64_msload(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_floats_enabled()?;
+        self.check_msload(memarg, ValType::F64)
+    }
+    fn visit_i32_msload8_s(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I32)
+    }
+    fn visit_i32_msload8_u(&mut self, memarg: MemArg) -> Self::Output {
+        self.visit_i32_msload8_s(memarg)
+    }
+    fn visit_i32_msload16_s(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I32)
+    }
+    fn visit_i32_msload16_u(&mut self, memarg: MemArg) -> Self::Output {
+        self.visit_i32_msload16_s(memarg)
+    }
+    fn visit_i64_msload8_s(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I64)
+    }
+    fn visit_i64_msload8_u(&mut self, memarg: MemArg) -> Self::Output {
+        self.visit_i64_msload8_s(memarg)
+    }
+    fn visit_i64_msload16_s(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I64)
+    }
+    fn visit_i64_msload16_u(&mut self, memarg: MemArg) -> Self::Output {
+        self.visit_i64_msload16_s(memarg)
+    }
+    fn visit_i64_msload32_s(&mut self, memarg: MemArg) -> Self::Output {
+        self.check_msload(memarg, ValType::I64)
+    }
+    fn visit_i64_msload32_u(&mut self, memarg: MemArg) -> Self::Output {
+        self.visit_i64_msload32_s(memarg)
+    }
 
     fn visit_nop(&mut self) -> Self::Output {
         Ok(())
