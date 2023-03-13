@@ -144,6 +144,9 @@ macro_rules! for_each_operator {
             @mvp I64MSLoad16U { memarg: $crate::MemArg } => visit_i64_msload16_u
             @mvp I64MSLoad32S { memarg: $crate::MemArg } => visit_i64_msload32_s
             @mvp I64MSLoad32U { memarg: $crate::MemArg } => visit_i64_msload32_u
+            @mvp MemrefField {field: u32} => visit_memref_field
+            @mvp MemrefNarrow {} => visit_memref_narrow
+
             @mvp Unreachable => visit_unreachable
             @mvp Nop => visit_nop
             @mvp Block { blockty: $crate::BlockType } => visit_block

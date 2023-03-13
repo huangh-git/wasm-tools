@@ -994,6 +994,21 @@ where
         self.push_operand(ValType::MemRef)?;
         Ok(())
     }
+    fn visit_memref_field(&mut self, field: u32) -> Self::Output {
+        self.pop_operand(Some(ValType::MemRef))?;
+        if field >= 4 {
+            bail!(self.offset, "memref.field >= 4");
+        }
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
+    fn visit_memref_narrow(&mut self) -> Self::Output {
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(ValType::MemRef)?;
+        Ok(())
+    }
     fn visit_memref_msstore(&mut self, memarg: MemArg) -> Self::Output {
         self.check_msstore(memarg, ValType::MemRef)
     }
