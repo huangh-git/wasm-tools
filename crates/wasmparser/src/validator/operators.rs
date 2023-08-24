@@ -982,6 +982,13 @@ where
 {
     type Output = Result<()>;
 
+    fn visit_memref_alloc(&mut self) -> Self::Output {
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::I32))?;
+        self.push_operand(ValType::MemRef)?;
+        Ok(())
+    }
     fn visit_memref_and(&mut self) -> Self::Output {
         self.check_memref_binary_op()?;
         Ok(())

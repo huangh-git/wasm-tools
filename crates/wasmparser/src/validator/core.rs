@@ -359,6 +359,9 @@ impl ModuleState {
                 )*
             };
 
+            (@visit $self:ident visit_memref_alloc) => {{
+                $self.validator().visit_memref_alloc()
+            }};
             (@visit $self:ident visit_memref_and) => {{
                 $self.validator().visit_memref_and()
             }};
