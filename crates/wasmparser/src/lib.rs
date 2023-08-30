@@ -147,6 +147,10 @@ macro_rules! for_each_operator {
             @mvp I64MSLoad32U { memarg: $crate::MemArg } => visit_i64_msload32_u
             @mvp MemrefField {field: u32} => visit_memref_field
             @mvp MemrefNarrow {} => visit_memref_narrow
+            @mvp MemrefEq {} => visit_memref_eq
+            @mvp MemrefNe {} => visit_memref_ne
+            @mvp MemrefNull {} => visit_memref_null
+            @mvp MemrefSelect {} => visit_memref_select
 
             @mvp Unreachable => visit_unreachable
             @mvp Nop => visit_nop

@@ -968,6 +968,11 @@ impl<'a> BinaryReader<'a> {
             0xc3 => visitor.visit_i64_extend16_s(),
             0xc4 => visitor.visit_i64_extend32_s(),
 
+            0xc5 => visitor.visit_memref_eq(),
+            0xc6 => visitor.visit_memref_ne(),
+            0xc7 => visitor.visit_memref_null(),
+            0xc8 => visitor.visit_memref_select(),
+
             0xd0 => visitor.visit_ref_null(self.read()?),
             0xd1 => visitor.visit_ref_is_null(),
             0xd2 => visitor.visit_ref_func(self.read_var_u32()?),

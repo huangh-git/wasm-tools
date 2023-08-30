@@ -359,6 +359,18 @@ impl ModuleState {
                 )*
             };
 
+            (@visit $self:ident visit_memref_eq) => {{
+                $self.validator().visit_memref_eq()
+            }};
+            (@visit $self:ident visit_memref_ne) => {{
+                $self.validator().visit_memref_ne()
+            }};
+            (@visit $self:ident visit_memref_null) => {{
+                $self.validator().visit_memref_null()
+            }};
+            (@visit $self:ident visit_memref_select) => {{
+                $self.validator().visit_memref_select()
+            }};
             (@visit $self:ident visit_memref_alloc) => {{
                 $self.validator().visit_memref_alloc()
             }};

@@ -982,6 +982,29 @@ where
 {
     type Output = Result<()>;
 
+    fn visit_memref_eq(&mut self) -> Self::Output {
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
+    fn visit_memref_ne(&mut self) -> Self::Output {
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(ValType::I32)?;
+        Ok(())
+    }
+    fn visit_memref_null(&mut self) -> Self::Output {
+        self.push_operand(ValType::MemRef)?;
+        Ok(())
+    }
+    fn visit_memref_select(&mut self) -> Self::Output {
+        self.pop_operand(Some(ValType::I32))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.pop_operand(Some(ValType::MemRef))?;
+        self.push_operand(ValType::MemRef)?;
+        Ok(())
+    }
     fn visit_memref_alloc(&mut self) -> Self::Output {
         self.pop_operand(Some(ValType::I32))?;
         self.pop_operand(Some(ValType::I32))?;
