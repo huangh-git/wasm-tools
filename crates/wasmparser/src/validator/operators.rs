@@ -1032,10 +1032,12 @@ where
         self.push_operand(ValType::I32)?;
         Ok(())
     }
-    fn visit_memref_narrow(&mut self) -> Self::Output {
-        self.pop_operand(Some(ValType::I32))?;
-        self.pop_operand(Some(ValType::I32))?;
+    fn visit_memref_narrow(&mut self, narrow_size: u32) -> Self::Output {
+        if narrow_size >= (1u32<<24) {
+            bail!(self.offset, "narrow size too big(narrowSize >= (1<<24))");
+        }
         self.pop_operand(Some(ValType::MemRef))?;
+        self.pop_operand(Some(ValType::I32))?;
         self.push_operand(ValType::MemRef)?;
         Ok(())
     }

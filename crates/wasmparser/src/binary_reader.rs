@@ -981,7 +981,7 @@ impl<'a> BinaryReader<'a> {
             0xdb => visitor.visit_memref_add(),
             0xdc => visitor.visit_memref_and(),
             0xdd => visitor.visit_memref_alloc(),
-            0xde => visitor.visit_memref_narrow(),
+            0xde => visitor.visit_memref_narrow(self.read_var_u32()?),
             0xdf => visitor.visit_memref_field(self.read_var_u32()?),
 
             0xe0 => visitor.visit_i32_msload(self.read_memarg(2)?),

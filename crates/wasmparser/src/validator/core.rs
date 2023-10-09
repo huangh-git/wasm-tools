@@ -387,8 +387,8 @@ impl ModuleState {
             (@visit $self:ident visit_memref_field $field:ident) => {{
                 $self.validator().visit_memref_field($field)
             }};
-            (@visit $self:ident visit_memref_narrow) => {{
-                $self.validator().visit_memref_narrow()
+            (@visit $self:ident visit_memref_narrow $narrow_size:ident) => {{
+                $self.validator().visit_memref_narrow($narrow_size)
             }};
             // These are always valid in const expressions
             (@visit $self:ident visit_i32_const $val:ident) => {{
