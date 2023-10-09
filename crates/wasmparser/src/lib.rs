@@ -119,7 +119,7 @@ macro_rules! for_each_operator {
             @mvp MemrefAnd => visit_memref_and
             @mvp MemrefAdd => visit_memref_add
             @mvp MemrefConst {addr: u32, size: u32, attr: u32} => visit_memref_const
-            @mvp MemrefAlloc => visit_memref_alloc
+            @mvp MemrefAlloc {attr: u32} => visit_memref_alloc
             @mvp MemrefMSStore { memarg: $crate::MemArg } => visit_memref_msstore
             @mvp I32MSStore { memarg: $crate::MemArg } => visit_i32_msstore
             @mvp I64MSStore { memarg: $crate::MemArg } => visit_i64_msstore

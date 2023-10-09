@@ -1005,8 +1005,10 @@ where
         self.push_operand(ValType::MemRef)?;
         Ok(())
     }
-    fn visit_memref_alloc(&mut self) -> Self::Output {
-        self.pop_operand(Some(ValType::I32))?;
+    fn visit_memref_alloc(&mut self, attr: u32) -> Self::Output {
+        if (attr & (!(0x33u32))) != 0 {
+            bail!(self.offset, "memref.alloc has error attr");
+        }
         self.pop_operand(Some(ValType::I32))?;
         self.pop_operand(Some(ValType::I32))?;
         self.push_operand(ValType::MemRef)?;
@@ -1020,7 +1022,10 @@ where
         self.check_memref_binary_op()?;
         Ok(())
     }
-    fn visit_memref_const(&mut self, _addr: u32, _size: u32, _attr: u32) -> Self::Output {
+    fn visit_memref_const(&mut self, _addr: u32, _size: u32, attr: u32) -> Self::Output {
+        if (attr & (!(0x33u32))) != 0 {
+            bail!(self.offset, "memref.const has error attr");
+        }
         self.push_operand(ValType::MemRef)?;
         Ok(())
     }

@@ -371,8 +371,8 @@ impl ModuleState {
             (@visit $self:ident visit_memref_select) => {{
                 $self.validator().visit_memref_select()
             }};
-            (@visit $self:ident visit_memref_alloc) => {{
-                $self.validator().visit_memref_alloc()
+            (@visit $self:ident visit_memref_alloc $attr:ident) => {{
+                $self.validator().visit_memref_alloc($attr)
             }};
             (@visit $self:ident visit_memref_and) => {{
                 $self.validator().visit_memref_and()
