@@ -1007,7 +1007,7 @@ where
     }
     fn visit_memref_alloc(&mut self, attr: u32) -> Self::Output {
         if (attr & (!(0x33u32))) != 0 {
-            bail!(self.offset, "memref.alloc has error attr");
+            bail!(self.offset, "memref.alloc has error attr:{attr}");
         }
         self.pop_operand(Some(ValType::I32))?;
         self.pop_operand(Some(ValType::I32))?;
