@@ -52,6 +52,8 @@ pub struct MemArg {
     /// is always zero unless the multi-memory proposal of WebAssembly is
     /// enabled.
     pub memory: u32,
+    /// metadata
+    pub metadata: u8,
 }
 
 /// A br_table entries representation.

@@ -249,6 +249,8 @@ impl<'a> BinaryReader<'a> {
     fn read_memarg(&mut self, max_align: u8) -> Result<MemArg> {
         let flags_pos = self.original_position();
         let mut flags = self.read_var_u32()?;
+        let metadata = ((flags>>8) & 0xff) as u8;
+        flags = flags & (!0xff00);
         let memory = if flags & (1 << 6) != 0 {
             flags ^= 1 << 6;
             self.read_var_u32()?
@@ -270,6 +272,7 @@ impl<'a> BinaryReader<'a> {
             max_align,
             offset,
             memory,
+            metadata,
         })
     }
 
