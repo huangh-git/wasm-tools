@@ -975,6 +975,7 @@ impl<'a> BinaryReader<'a> {
             0xc6 => visitor.visit_memref_ne(),
             0xc7 => visitor.visit_memref_null(),
             0xc8 => visitor.visit_memref_select(),
+            0xc9 => visitor.visit_memref_dealloc(self.read_var_u32()?),
 
             0xd0 => visitor.visit_ref_null(self.read()?),
             0xd1 => visitor.visit_ref_is_null(),

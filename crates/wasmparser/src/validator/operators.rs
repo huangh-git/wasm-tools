@@ -1014,6 +1014,10 @@ where
         self.push_operand(ValType::MemRef)?;
         Ok(())
     }
+    fn visit_memref_dealloc(&mut self, _info: u32) -> Self::Output {
+        self.pop_operand(Some(ValType::MemRef))?;
+        Ok(())
+    }
     fn visit_memref_and(&mut self) -> Self::Output {
         self.check_memref_binary_op()?;
         Ok(())
