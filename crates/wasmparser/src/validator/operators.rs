@@ -1042,7 +1042,7 @@ where
         Ok(())
     }
     fn visit_memref_narrow(&mut self, narrow_size: u32) -> Self::Output {
-        if narrow_size >= (1u32<<24) {
+        if (narrow_size & 0x80000000) >= (1u32<<24) {
             bail!(self.offset, "narrow size too big(narrowSize >= (1<<24))");
         }
         self.pop_operand(Some(ValType::MemRef))?;
